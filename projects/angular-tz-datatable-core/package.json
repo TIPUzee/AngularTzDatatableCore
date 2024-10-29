@@ -1,0 +1,34 @@
+{
+    "name": "angular-tz-datatable-core",
+    "version": "0.0.1c",
+    "peerDependencies": {
+    },
+    "dependencies": {
+        "tslib": "^2.3.0"
+    },
+    "sideEffects": false,
+    "author": {
+        "email": "zeeshanadeem20arid1896@gmail.com",
+        "name": "Zeeshan Nadeem",
+        "url": "https://www.linkedin.com/in/tipuzee/"
+    },
+    "description": "AngularTzDatatableCore is a customizable Angular library designed to create accessible, feature-rich datatables for handling large data sets efficiently. It supports dynamic column configuration, searching, sorting, pagination, row selection, and event handling, making it ideal for scalable data-driven applications.",
+    "keywords": [
+        "angular",
+        "datatable",
+        "data-table",
+        "table",
+        "search",
+        "sorting",
+        "pagination",
+        "row-selection",
+        "accessible",
+        "angular-library",
+        "table-component",
+        "lightweight",
+        "dynamic-columns",
+        "scalable",
+        "core",
+        "typescript"
+    ]
+}

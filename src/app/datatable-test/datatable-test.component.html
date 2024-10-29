@@ -1,0 +1,106 @@
+<input type="text" (change)="dt.search(searchValue)" [(ngModel)]="searchValue">
+<br>
+<div>
+   <button (click)="dt.clearSearchCols()">Clear Cols</button>
+   <button (click)="dt.resetSearchCols()">Reset Cols</button>
+   <br>
+
+   @for (col of dt.getColsConfigAsArray(); track col.key) {
+      <button
+         [ngStyle]="{'backgroundColor': col.isSearchable && col.isVisible ? 'blue' : 'transparent', 'color':
+         col.isSearchable && col.isVisible ? 'white' : 'black'}"
+         (click)="dt.toggleSearchCol(col.key)"
+      >
+         {{ col.title }}
+      </button>
+   }
+</div>
+<br>
+<div>
+   <button (click)="dt.resetColsVisibility()">Reset Visibility</button>
+   <br>
+
+   @for (col of dt.getColsConfigAsArray(); track col.key) {
+      <button
+         [ngStyle]="{'backgroundColor': col.isVisible ? 'blue' : 'transparent', 'color':
+         col.isVisible ? 'white' : 'black'}"
+         (click)="dt.toggleColVisibility(col.key)"
+      >
+         {{ col.title }}
+      </button>
+   }
+</div>
+<br>
+<div>
+   <button>Sorting</button>
+   <br>
+
+   @for (col of dt.getColsConfigAsArray(); track col.key) {
+      <button
+         [ngStyle]="{'backgroundColor': col.key === dt.getSortingKey() ? 'blue' : 'transparent', 'color':
+         col.key === dt.getSortingKey() ? 'white' : 'black'}"
+         (click)="dt.setSortingKey(col.key)"
+         *ngIf="col.isVisible"
+      >
+         {{ col.title }}
+      </button>
+   }
+</div>
+<br>
+<button (click)="dt.gotoPage(dt.getPageNb() - 1)" [disabled]="dt.getPageNb() === 1">Prev</button>
+<button (click)="dt.gotoPage(dt.getPageNb() + 1)" [disabled]="dt.getPageNb() === dt.getTotalPages()">Next</button>
+<br>
+<br>
+<table>
+   <tr>
+      <th>
+         <div (click)="dt.toggleAllRowsSelectionInPage()">
+            <div *ngIf="dt.getSelectedRowCountOnPage() === dt.getPageSize()" class="checked checkbox">✓</div>
+            <div *ngIf="dt.getSelectedRowCountOnPage() === 0" class="unchecked checkbox">✓</div>
+            <div
+               *ngIf="dt.getSelectedRowCountOnPage() !== dt.getPageSize() && dt.getSelectedRowCountOnPage() !== 0"
+               class="partial checkbox"
+            >
+               -
+            </div>
+         </div>
+      </th>
+      @for (col of dt.getColsConfigAsArray(); track col.key) {
+         <th *ngIf="col.isVisible">
+            <div>
+               {{ col.title }}
+            </div>
+         </th>
+      }
+   </tr>
+   @for (row of dt.getPageDataViewAsAny(); track row._dataUuid_) {
+      <tr (click)="dt.emitRowClickTrigger(row['_dataUuid_'])">
+         <td>
+            <div (click)="dt.toggleRowSelection(row._dataUuid_)">
+               <div *ngIf="row._selected_" class="checked checkbox">✓</div>
+               <div *ngIf="!row._selected_" class="unchecked checkbox">✓</div>
+            </div>
+         </td>
+         @for (col of dt.getColsConfigAsArray(); track col.key) {
+            <td
+               *ngIf="col.isVisible"
+               (mouseenter)="dt.emitRowHoverTrigger(row['_dataUuid_'])"
+               (click)="dt.emitCellClickTrigger(row['_dataUuid_'], col.key)"
+            >
+               <div>
+                  {{ row[col.key] }}
+               </div>
+            </td>
+         }
+      </tr>
+   }
+</table>
+<br>
+<br>
+<span>{{ dt.getTotalRows() }} Row(s)</span>
+<br>
+<span>Select {{ dt.getSelectedRowCountOnPage() }} out of {{ dt.getPageSize() }} Row(s)</span>
+<br>
+<span>{{ dt.getPageNb() }} out of {{ dt.getTotalPages() }}</span>
+<br>
+<span>Total Rows: {{ dt.getTotalRows() }}</span>

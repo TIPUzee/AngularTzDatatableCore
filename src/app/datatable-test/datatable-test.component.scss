@@ -1,0 +1,44 @@
+button {
+  margin: 3px;
+}
+
+th > div {
+  padding-inline: 10px;
+  padding-block: 3px;
+  text-align: start !important;
+}
+
+td > div {
+  padding-inline: 10px;
+  padding-block: 3px;
+}
+
+.checkbox {
+  border: 1px solid;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 9px;
+  width: 15px;
+  aspect-ratio: 1/1;
+  display: flex;
+  justify-content: center;
+}
+
+.checked.checkbox {
+  color: white;
+  background: blue;
+  border-color: blue;
+}
+
+.unchecked.checkbox {
+  color: #c4c4c4;
+  background: transparent;
+  border-color: blue;
+}
+
+.partial.checkbox {
+  color: white;
+  font-weight: bold;
+  background: blue;
+  border-color: blue;
+}

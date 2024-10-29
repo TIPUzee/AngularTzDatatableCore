@@ -17,13 +17,13 @@ describe('AppComponent', () => {
   it(`should have the 'angular-tz-datatable-core-workspace' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('angular-tz-datatable-core-workspace');
+    expect(app.title).toEqual('angular-tz-datatable-1-core-workspace');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, angular-tz-datatable-core-workspace');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, angular-tz-datatable-1-core-workspace');
   });
 });
