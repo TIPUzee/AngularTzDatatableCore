@@ -2,6 +2,7 @@
   "name": "angular-tz-datatable-core-workspace",
   "version": "0.0.0",
   "scripts": {
+    "start": "ng serve",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
