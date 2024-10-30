@@ -8,6 +8,117 @@ Use AngularTzDatatableCore to build beautiful, customizable Angular datatables e
 
 Note that this library will support API data fetching in the future.
 
+### Basic Example
+
+Here’s a simple example of how to use the AngularTzDatatableCore in a component:
+
+#### 1. Sample Columns configuration
+
+```ts
+// test-data/datatype.ts
+
+// Type of data to be displayed in the table
+export type User = {
+    id: number;
+    name: string;
+    age: number | null;
+};
+```
+
+#### 2. Sample Data
+
+```ts
+// test-data/data.ts
+import { ColumnsConfig } from "angular-tz-datatable-core";
+import { User } from './data';
+
+const columns: ColumnsConfig = {
+    id: {
+        title: 'ID',
+        isSearchable: false,
+    },
+    name: {
+        title: 'Name',
+    },
+    age: {
+        title: 'Age',
+        isSortable: false,
+        defaultContent: '-',
+    },
+};
+
+export const data: Array<User> = [
+    { id: 2, name: 'Jane Smith', age: 34 },
+    { id: 5, name: 'Chris White', age: 30 },
+    { id: 10, name: 'Sophia Wilson', age: 27 },
+    { id: 1, name: 'John Doe', age: 29 },
+    { id: 3, name: 'Mike Johnson', age: 41 },
+    { id: 7, name: 'David Martin', age: 26 },
+    { id: 19, name: 'Benjamin Scott', age: 37 },
+    { id: 4, name: 'Emily Davis', age: 23 },
+    { id: 6, name: 'Ava Taylor', age: 38 },
+    { id: 8, name: 'Olivia Brown', age: 31 },
+]
+```
+
+#### 3. Create datatable instance
+
+```ts
+import { TzDatatable } from 'angular-tz-datatable-core';
+import { data, columns } from '../test-data/data'; // Sample data and columns
+import { User } from '../test-data/datatype'; // type of table data
+
+@Component({
+    // Your component configuration
+})
+export class DatatableTestComponent
+{
+    protected readonly dt: TzDatatable<User> = new TzDatatable();
+    
+    
+    constructor()
+    {
+        this.initializeData();
+    }
+    
+    
+    private initializeData()
+    {
+        this.dt.initColsConfig(columns); // Must be called before setData
+        this.dt.setData(data);
+    }
+}
+```
+
+#### 4. Use in HTML template
+
+```html
+<table>
+   <tr>
+      <th
+         *ngFor="let col of dt.getColsConfigAsArray(); trackBy: col.key"
+         *ngIf="col.isVisible"
+      >
+         {{ col.title }}
+      </th>
+   </tr>
+
+   <tbody>
+      <tr
+         *ngFor="let row of dt.getPageDataViewAsAny(); trackBy: row._dataIndex_"
+      >
+         <td
+            *ngFor="let col of dt.getColsConfigAsArray(); trackBy: col.key"
+            *ngIf="col.isVisible"
+         >
+            {{ row[col.key] }}
+         </td>
+      </tr>
+   </tbody>
+
+</table>
+```
+
 ## Installation
 
 To install AngularTzDatatableCore, run the following command in your Angular project:
@@ -34,7 +145,7 @@ For the following methods, ```dt``` is the instance of the ```TzDatatable``` ser
 | API                                      | Return Type                        | Usage                                                      |
 |:-----------------------------------------|:-----------------------------------|:-----------------------------------------------------------|
 | ```dt.initColsConfig(ColumnsConfig)```   | ```void```                         | Initializes table ```columns```                            |
-| ```dt.setData(Array<TExtended>)```       | ```void```                         | Initializes table ```data```                               |
+| ```dt.setData(Array<T>)```               | ```void```                         | Initializes table ```data```                               |
 | ```dt.getColsConfigAsArray()```          | ```Array<ColumnsConfigExtended>``` | Get ```columns configurations```                           |
 | ```dt.getData()```                       | ```Array<TExtended>```             | Get ```data```                                             |
 | ```dt.getViewMode()```                   | ```"NORMAL" \| "SEARCH"```         | Get the current view mode                                  |
@@ -105,163 +216,6 @@ dt.addEventListener("RowClick", (row) =>
 | ```row._dataIndex_```            | ```number```  | Get the assigned unique id of the row in the data array                             |
 | ```row._selected_```             | ```boolean``` | Get the selection status of the row                                                 |
 | ```column.isSearchableDefault``` | ```boolean``` | Get the default search status of the column <br> (set in the columns configuration) |
-
-## Usage
-
-### Using the Library
-
-To use the AngularTzDatatableCore library in your Angular component, import the ```TzDatatable``` class and create an instance of it in your component:
-
-```ts
-import { TzDatatable } from 'angular-tz-datatable-core';
-
-@Component({
-    imports: [
-        // No need to import TzDatatable
-    ]
-})
-export class YourComponent
-{
-    protected readonly dt: TzDatatable<User> = new TzDatatable();
-}
-```
-
-### Basic Example
-
-Here’s a simple example of how to use the AngularTzDatatableCore in a component:
-
-#### 1. Sample Columns configuration
-
-```ts
-// test-data/data.ts
-
-import { ColumnsConfig } from "angular-tz-datatable-core";
-
-export type User = {
-    id: number;
-    name: string;
-    age: number | null;
-};
-
-const columnsConfigs: ColumnsConfig = {
-    id: {
-        title: 'ID',
-        width: 50,
-        isVisible: true,
-        isSearchable: true,
-        isSortable: true,
-        defaultContent: '-',
-    },
-    name: {
-        title: 'Name',
-        width: 150,
-        isVisible: true,
-        isSearchable: true,
-        isSortable: true,
-        defaultContent: 'N/A',
-    },
-    age: {
-        title: 'Age',
-        width: 50,
-        isVisible: true,
-        isSearchable: true,
-        isSortable: true,
-        defaultContent: '-',
-    },
-};
-```
-
-#### 2. Sample Data
-
-```ts
-// test-data/data.ts
-
-import { User } from './data';
-
-export const data: Array<User> = [
-    { id: 2, name: 'Jane Smith', age: 34 },
-    { id: 5, name: 'Chris White', age: 30 },
-    { id: 10, name: 'Sophia Wilson', age: 27 },
-    { id: 1, name: 'John Doe', age: 29 },
-    { id: 3, name: 'Mike Johnson', age: 41 },
-    { id: 7, name: 'David Martin', age: 26 },
-    { id: 19, name: 'Benjamin Scott', age: 37 },
-    { id: 4, name: 'Emily Davis', age: 23 },
-    { id: 6, name: 'Ava Taylor', age: 38 },
-    { id: 8, name: 'Olivia Brown', age: 31 },
-]
-```
-
-#### 3. Create datatable instance
-
-```ts
-import { TzDatatable } from 'angular-tz-datatable-core';
-import { data } from '../test-data/data'; // Sample data
-import { columnsConfigs, User } from '../test-data/data'; // Sample columns configuration
-
-@Component({
-    // Your component configuration
-})
-export class DatatableTestComponent
-{
-    protected readonly dt: TzDatatable<User> = new TzDatatable();
-    
-    
-    constructor()
-    {
-        this.initializeData();
-    }
-    
-    
-    private initializeData()
-    {
-        this.dt.initColsConfig(columnsConfig); // Must be called before setData
-        this.dt.setData(data);
-    }
-}
-```
-
-### HTML Template Example
-
-Here’s how you can create the HTML template for the datatable:
-
-```angular2html
-
-<table>
-   <!-- Header -->
-   <tr>
-      <th
-         *ngFor="let col of dt.getColsConfigAsArray(); trackBy: col.key"
-         *ngIf="col.isVisible"
-      >
-         {{ col.title }}
-      </th>
-   </tr>
-   <!-- Header -->
-
-   <!-- Body -->
-   <tbody>
-
-      <!-- Row -->
-      <tr
-         *ngFor="let row of dt.getPageDataViewAsAny(); trackBy: row._dataIndex_"
-      >
-         <!-- Cell -->
-         <td
-            *ngFor="let col of dt.getColsConfigAsArray(); trackBy: col.key"
-            *ngIf="col.isVisible"
-         >
-            {{ row[col.key] }}
-         </td>
-         <!-- Cell -->
-      </tr>
-      <!-- Row -->
-
-   </tbody>
-   <!-- Body -->
-
-</table>
-```
 
 ## Contributors
 
